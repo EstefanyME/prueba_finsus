@@ -178,5 +178,57 @@ router.delete('/transactions/:id', transactionController.deleteTransaction);
  */
 router.put('/transactions/:id/status', transactionController.updateTransactionStatus);
 
+/**
+ * @swagger
+ * /api/transactions/user-summary/{rfc}:
+ *   get:
+ *     summary: Obtener el resumen de transacciones de un usuario
+ *     description: Retorna el número total de retiros, el monto total retirado, el monto total en comisiones y el monto total (monto + comisión) para un usuario específico.
+ *     parameters:
+ *       - in: path
+ *         name: rfc
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: RFC del usuario para filtrar las transacciones.
+ *     responses:
+ *       200:
+ *         description: Resumen de transacciones del usuario.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 retirosTotales:
+ *                   type: integer
+ *                   description: Número total de retiros del usuario.
+ *                 montoTotalRetirado:
+ *                   type: number
+ *                   description: Monto total retirado por el usuario.
+ *                 montoTotalComisiones:
+ *                   type: number
+ *                   description: Monto total en comisiones del usuario.
+ *                 montoTotal:
+ *                   type: number
+ *                   description: Monto total (monto retirado + comisiones).
+ *               example:
+ *                 retirosTotales: 2
+ *                 montoTotalRetirado: 300
+ *                 montoTotalComisiones: 30
+ *                 montoTotal: 330
+ *       500:
+ *         description: Error al obtener el resumen de transacciones.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Mensaje de error.
+ *               example:
+ *                 message: "Error al obtener el resumen de transacciones"
+ */
+router.get('/transactions/user-summary/:rfc', transactionController.getUserTransactionSummary);
 
 module.exports = router;

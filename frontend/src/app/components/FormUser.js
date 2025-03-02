@@ -1,85 +1,74 @@
-'use client';
-import React, { useState } from 'react';
-import CustomButton from './CustomButton';
+import React, { useState } from "react";
+import CustomButton from "./CustomButton";
 
-const Form = ({ onCreateTransaction, onClose }) => {
-  const [formData, setFormData] = useState({
-    rfc: '',
-    fechaRetiro: '',
-    monto: '',
-    comision: '',
-    status: 'PENDING',
+const FormUser = ({ onClose, onSave }) => {
+  const [newUser, setNewUser] = useState({
+    rfc: "",
+    nombre: "",
+    apellidos: "",
+    status: "ACTIVE",
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setNewUser((prevUser) => ({
+      ...prevUser,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onCreateTransaction(formData);
+    onSave(newUser);
   };
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-black">
-      <h2 className="text-xl font-semibold mb-4">Crear Transacción</h2>
+      <h2 className="text-xl font-semibold mb-4">Agregar Usuario</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">RFC</label>
           <input
             type="text"
             name="rfc"
-            value={formData.rfc}
+            value={newUser.rfc}
             onChange={handleInputChange}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             required
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Fecha de Retiro</label>
+          <label className="block text-sm font-medium text-gray-700">Nombre</label>
           <input
-            type="date"
-            name="fechaRetiro"
-            value={formData.fechaRetiro}
+            type="text"
+            name="nombre"
+            value={newUser.nombre}
             onChange={handleInputChange}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             required
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Monto</label>
+          <label className="block text-sm font-medium text-gray-700">Apellidos</label>
           <input
-            type="number"
-            name="monto"
-            value={formData.monto}
+            type="text"
+            name="apellidos"
+            value={newUser.apellidos}
             onChange={handleInputChange}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             required
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Comisión (%)</label>
-          <input
-            type="number"
-            name="comision"
-            value={formData.comision}
-            onChange={handleInputChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Estado</label>
+          <label className="block text-sm font-medium text-gray-700">Status</label>
           <select
             name="status"
-            value={formData.status}
+            value={newUser.status}
             onChange={handleInputChange}
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="PENDING">Pendiente</option>
-            <option value="COMPLETED">Completado</option>
-            <option value="CANCELLED">Cancelado</option>
+            <option value="ACTIVE">Activo</option>
+            <option value="LOCKED">Bloqueado</option>
           </select>
         </div>
         <div className="flex justify-end gap-2">
@@ -96,4 +85,4 @@ const Form = ({ onCreateTransaction, onClose }) => {
   );
 };
 
-export default Form;
+export default FormUser;

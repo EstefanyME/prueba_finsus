@@ -57,3 +57,23 @@ exports.updateTransactionStatus = async (req, res) => {
     await transaction.save();
     res.json(transaction);
 }
+
+exports.getUserTransactionSummary = async (req, res) => {
+    const { rfc } = req.params;
+  
+    try {
+      const transactions = await Transaction.find({ rfc, deleted: false });
+      const retirosTotales = transactions.length;
+      const montoTotalRetirado = transactions.reduce((sum, transaction) => sum + transaction.monto, 0);
+      const montoTotalComisiones = transactions.reduce((sum, transaction) => sum + transaction.comision, 0);
+      const montoTotal = montoTotalRetirado + montoTotalComisiones;
+      res.json({
+        retirosTotales,
+        montoTotalRetirado,
+        montoTotalComisiones,
+        montoTotal,
+      });
+    } catch (err) {
+      res.status(500).json({ message: 'Error al obtener el resumen de transacciones', error: err });
+    }
+  };
